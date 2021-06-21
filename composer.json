@@ -1,0 +1,88 @@
+{
+    "name": "laravel/laravel",
+    "type": "project",
+    "description": "The Laravel Framework.",
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": "7.4.*",
+        "doctrine/dbal": "^3.0.0",
+        "fideloper/proxy": "^4.4.1",
+        "fruitcake/laravel-cors": "^2.0.3",
+        "guzzlehttp/guzzle": "^7.2.0",
+        "laravel/framework": "^8.0",
+        "rollbar/rollbar-laravel": "^7.0"
+    },
+    "require-dev": {
+        "brainmaestro/composer-git-hooks": "^2.8",
+        "enlightn/security-checker": "^1.9",
+        "facade/ignition": "^2.5.2",
+        "fzaninotto/faker": "^1.9.1",
+        "laravel/tinker": "^2.5.0",
+        "mockery/mockery": "^1.4.2",
+        "nunomaduro/collision": "^5.1.0",
+        "php-parallel-lint/php-console-highlighter": "^0.5.0",
+        "php-parallel-lint/php-parallel-lint": "^1.0",
+        "phpmd/phpmd": "2.9.1",
+        "phpunit/phpunit": "^9.4",
+        "sensiolabs/security-checker": "6.0.3",
+        "squizlabs/php_codesniffer": "3.5.8"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        },
+        "classmap": [
+            "database/seeds",
+            "database/factories"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        },
+        "files": [
+            "tests/helpers.php"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+            "sudo chmod -R 777 storage;sudo chmod -R 777 bootstrap"
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate"
+        ],
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ],
+        "post-install-cmd": [
+            "[ -f vendor/bin/cghooks ] && vendor/bin/cghooks add --ignore-lock || echo 'cghooks not found'"
+        ],
+        "post-update-cmd": [
+            "[ -f vendor/bin/cghooks ] && vendor/bin/cghooks update || echo 'cghooks not found'"
+        ],
+        "cghooks": "vendor/bin/cghooks",
+        "phpunit": "vendor/bin/phpunit"
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": []
+        },
+        "hooks": {
+            "pre-commit": "chmod +x .deploy/pre_commit.sh && .deploy/pre_commit.sh",
+            "pre-push": "chmod +x .deploy/pre_push.sh && .deploy/pre_push.sh"
+        }
+    }
+}

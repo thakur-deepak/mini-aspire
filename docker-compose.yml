@@ -1,0 +1,55 @@
+version: "3"
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PORT: 80
+    ports:
+      - 8080:80
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - pg
+    environment:
+      DEBUG: 'true'
+    networks:
+      testing_net:
+        ipv4_address: 172.28.1.1
+
+  pg:
+    image: postgres:latest
+    ports:
+    - 5432:5432
+    volumes:
+      - db_data:/var/lib/postgres
+    environment:
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: sample
+    networks:
+      testing_net:
+        ipv4_address: 172.28.1.2
+
+  redis:
+    image: "redis:alpine"
+    command: redis-server --requirepass docker
+    ports:
+      - "8379:6379"
+    volumes:
+      - $PWD/redis-data:/var/lib/redis
+    environment:
+      - REDIS_REPLICATION_MODE=master
+    networks:
+      testing_net:
+        ipv4_address: 172.28.1.3        
+      
+
+volumes:
+  db_data: {}
+networks:
+  testing_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
