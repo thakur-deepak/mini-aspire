@@ -1,6 +1,7 @@
 ## About Project
 
-This is the space where you can add the description of your project, once you have cloned the boilerplate and you have replaced the project path from ucreate-laravel_boilerplate to your project name.
+Mini Aspire
+i user latest laravel and postgres to build this app
 
 ## Technologies
 
@@ -20,7 +21,7 @@ This is the space where you can add the description of your project, once you ha
    
   - **Clone the project**
        >
-        git clone https://github.com/uCreateit/ucreate-laravel_boilerplate.git
+        git clone https://github.com/thakur-deepak/mini-aspire.git
         
     The above command is to clone the boilerplate structure and set up. Once done, replace ucreate-laravel_boilerplate to your project name, so the project repository path will become something like https://github.com/uCreateit/myProject.git (feel free to update this guideline to your project path, once the boilerplate work has been done)
 
@@ -39,22 +40,22 @@ This is the space where you can add the description of your project, once you ha
 
  - **Generate key**
     >
-        docker-compose run web php artisan key:generate
+        docker-compose run miniaspire php artisan key:generate
 
  - **Run database migrations**
     >
-        docker-compose run web php artisan migrate
+        docker-compose run miniaspire php artisan migrate
 
 
  - **Run seeder**
     >
-        docker-compose run web php artisan db:seed
+        docker-compose run miniaspire php artisan db:seed
 
  - **Start server**
     >
         docker-compose up --build
 
-As IP is configured in ```docker-compose.yml``` file so API will be running on [http://172.28.1.1](http://172.28.1.1) now.
+As IP is configured in ```docker-compose.yml``` file so API will be running on [http://162.28.1.1](http://162.28.1.1) now.
 
 
 ## Installation
