@@ -1,7 +1,7 @@
 ## About Project
 
 Mini Aspire
-i user latest laravel and postgres to build this app
+It is realted to loan and Weekly repayment
 
 ## Technologies
 
@@ -23,7 +23,7 @@ i user latest laravel and postgres to build this app
        >
         git clone https://github.com/thakur-deepak/mini-aspire.git
         
-    The above command is to clone the boilerplate structure and set up. Once done, replace ucreate-laravel_boilerplate to your project name, so the project repository path will become something like https://github.com/uCreateit/myProject.git (feel free to update this guideline to your project path, once the boilerplate work has been done)
+    
 
   - **Go to project directory**
        >
@@ -61,18 +61,10 @@ As IP is configured in ```docker-compose.yml``` file so API will be running on [
 ## Installation
 
 
-# External Services/API Reference
+# Services/API Reference
 
-* **PostMark**
-  * Postmark is used for Email Service.
-  * Create Account on [Postmark](https://postmarkapp.com) and verify the sender signatures.
-  * Create new server (if required) and Get server API token from 'Credentials' tab under the created server.
-  * Set 'Server API token' as Postmark username and password in environment/config variables
+* **Sanctum**
+  * Documentation:- https://laravel.com/docs/8.x/sanctum 
 
-* **AWS S3**
-  * AWS S3 is used for uploading/storing files including images.
-  * Your S3 credentials can be found on the Security Credentials section of AWS Account
-  * To create a bucket access the S3 section of the AWS Management Console
-  * Set AWS access key, secret key, bucket name etc. as environment variables.
-  * Reference: https://aws.amazon.com/s3
+
 # mini-aspire
