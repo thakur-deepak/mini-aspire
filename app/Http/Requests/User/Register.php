@@ -3,50 +3,27 @@
 namespace App\Http\Requests\User;
 
 use App\Http\Requests\BaseRequest;
+use Illuminate\Http\Request;
 
 class Register extends BaseRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
+
+    public function rules(): array
     {
-        $professions =  implode(',', config('constants.PROFESSIONS'));
-        $role = implode(',', config('constants.PROVIDER_ROLES'));
-        if ($this->request->all()['profession'] == config('constants.PROFESSIONAL')) {
-            $role = implode(',', config('constants.PROFESSIONAL_ROLES'));
-        }
         return [
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:8',
-            'profession' => 'required|in:' . $professions,
-            'role' => 'required|in:' . $role
+            'first_name' => 'required|max:120|regex:' . config('constants.NAME_REGEX'),
+            'last_name'  => 'required|max:120|regex:' . config('constants.NAME_REGEX'),
+            'email'      => 'required|email|unique:users|regex:' . config('constants.EMAIL_REGEX'),
+            'password'   => 'required|min:8|regex:' . config('constants.PASSWORD_REGEX')
         ];
     }
-    /**
-     * Custom message for validation
-     *
-     * @return array
-     */
-    public function messages()
+
+    public function messages(): array
     {
-        return [
-            'email.email' => 'Please enter a valid email',
-            'email.required' => 'Email is required!',
-            'email.unique' => 'This email has already been used',
-            'password.required' => 'Password is required!',
-            'password.min' => 'Password must contain minimum 8 characters'
-        ];
+        return trans('messages.validation');
     }
 }

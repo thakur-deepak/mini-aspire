@@ -1,17 +1,27 @@
 <?php
 
-$router->group(['prefix' => 'v1', 'namespace' => '\App\Modules\Api\V1\Controllers', 'middleware'=>'cors'], function($router) {
+$router->group(['prefix' => 'v1', 'namespace' => '\App\Modules\Api\V1\Controllers'], function($router) {
 
-    // public api like
+    $router->post('signup', [
+        'as' => 'signup',
+        'uses' => 'UserController@signup'
+    ]);
 
-    $router->group(['middleware' => ['CheckAccessToken']], function ($router) {
+    $router->group(['middleware' => ['auth:sanctum']], function ($router) {
 
-        // API require token
+        $router->post('repayment', [
+            'as' => 'loan_repayment',
+            'uses' => 'RepaymentController@repayment'
+        ]);
 
-        $router->group(['middleware' => ['IsAuthorized']], function ($router) {
+        $router->put('approve', [
+            'as' => 'loan_approve',
+            'uses' => 'LoanController@approve'
+        ]);
 
-            // API require token and authorization 
-
-        });
+        $router->post('loan-request', [
+            'as' => 'loan_request',
+            'uses' => 'LoanController@store'
+        ]);
     });
 });

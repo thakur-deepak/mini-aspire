@@ -15,7 +15,10 @@ class UserRepository implements UserInterface
 
     public function create(array $attributes): User
     {
-        return $this->user->create($attributes);
+        $user = $this->user->create($attributes);
+        $token = $user->createToken(env('TOKEN_NAME', 'API TOKEN'));
+        $user['token'] = $token->plainTextToken;
+        return $user;
     }
 
     public function findBy($column_name, $value)

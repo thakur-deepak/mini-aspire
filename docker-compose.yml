@@ -1,6 +1,6 @@
 version: "3"
 services:
-  web:
+  miniaspire:
     build:
       context: .
       dockerfile: Dockerfile
@@ -11,39 +11,38 @@ services:
     volumes:
       - .:/var/www/html
     depends_on:
-      - pg
+      - miniaspire_pg
     environment:
       DEBUG: 'true'
     networks:
       testing_net:
-        ipv4_address: 172.28.1.1
+        ipv4_address: 162.28.1.1
 
-  pg:
+  miniaspire_pg:
     image: postgres:latest
     ports:
-    - 5432:5432
+      - 6434:5432
     volumes:
       - db_data:/var/lib/postgres
     environment:
       POSTGRES_PASSWORD: docker
-      POSTGRES_DB: sample
+      POSTGRES_DB: miniaspire
     networks:
       testing_net:
-        ipv4_address: 172.28.1.2
+        ipv4_address: 162.28.1.2
 
-  redis:
-    image: "redis:alpine"
-    command: redis-server --requirepass docker
+  miniaspire_pg_testing:
+    image: postgres:latest
     ports:
-      - "8379:6379"
+      - 6435:5432
     volumes:
-      - $PWD/redis-data:/var/lib/redis
+      - db_data:/var/lib/postgres
     environment:
-      - REDIS_REPLICATION_MODE=master
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: miniaspire
     networks:
       testing_net:
-        ipv4_address: 172.28.1.3        
-      
+        ipv4_address: 162.28.1.4
 
 volumes:
   db_data: {}
@@ -52,4 +51,4 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: 172.28.0.0/16
+        - subnet: 162.28.0.0/16

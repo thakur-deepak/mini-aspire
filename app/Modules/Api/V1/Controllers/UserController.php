@@ -2,65 +2,29 @@
 
 namespace App\Modules\Api\V1\Controllers;
 
-use App\Components\AccessTokenHandler;
-use App\Components\UserComponent;
-use App\Components\XeroAPI;
-use App\Http\Requests\User;
-use App\Repositories\Reference\ReferenceInterface;
+use App\Formatter\OutputInterface;
+use App\Http\Requests\User\Register;
 use App\Repositories\User\UserInterface;
-use App\Validations\UserValidation;
-use Artisan;
-use Config;
-use DB;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Validator;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends ApiController
 {
-    private $user;
+    private UserInterface $user;
 
-    private $input;
-
-    private $reference;
-
-    public function __construct(UserInterface $user, ReferenceInterface $reference)
+    public function __construct(UserInterface $user)
     {
         $this->user = $user;
-        $this->reference = $reference;
     }
 
-    public function signup(User $request)
+    public function signup(Register $request): JsonResponse
     {
-        $input = $request->validated();
-        $access_token = new AccessTokenHandler($request);
-        $input['access_token'] = $access_token->get();
-        $input['role_id'] = $input['role_id'] ?? Config::get('constants.USER_ROLE.PROFESSIONAL');
-        $input['registration_step'] = Config::get('constants.REGISTRATION_STEP.BASIC');
-        $input['password'] = \bcrypt(Config::get('constants.RANDOM_PASSWORD'));
-        $input['email'] = strtolower($input['email']);
-        $input['status'] = Config::get('constants.USER.PASSIVE_STATUS');
-        return $this->saveUser($input);
+        return $this->sendJsonResponse($this->user->create($request->validated()), __('messages.success.created'), 201);
     }
 
-    private function saveUser($input)
-    {
-        DB::beginTransaction();
-        $user_info = $this->user->create($input);
-        if ($user_info->getErrors()) {
-            $response_data = $this->createJsonResponse(
-                $user_info->getErrors(),
-                Config::get('constants.ERROR.VALIDATION')
-            );
-            return new JsonResponse($response_data, 400);
-        }
-        DB::commit();
-        $user_info['token'] = json_decode($input['access_token'], true)[0]['token'];
-        $response_data = $this->createJsonResponse($user_info, Config::get('constants.USER.CREATE_SUCCESS'));
-        return new JsonResponse($response_data, 201);
-    }
+
 
     private function getRegistrationStep($id)
     {
