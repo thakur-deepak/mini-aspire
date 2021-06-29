@@ -1,4 +1,4 @@
-version: "3"
+version:d"3"
 services:
   miniaspire:
     build:
